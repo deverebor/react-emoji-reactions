@@ -1,0 +1,44 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Diretório de dependências do npm
+node_modules/
+
+# Diretório de build/output
+dist/
+build/
+
+# Sistema de empacotamento de bundlers como Webpack, Parcel, etc.
+.cache/
+.parcel-cache/
+
+# Arquivos temporários do editor
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.tmp
+
+# Diretórios de relatórios e cobertura de testes
+coverage/
+*.lcov
+
+# Arquivos de lock do npm
+package-lock.json
+npm-shrinkwrap.json
+
+
+# Arquivos de configuração de IDEs
+.idea/
+.vscode/
+*.code-workspace
+
+# Diretório de configurações e cache do Jest
+jest/
+
+# Arquivos gerados por ESLint
+.eslintcache
