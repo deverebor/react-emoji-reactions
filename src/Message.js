@@ -1,9 +1,8 @@
 import React, { useState } from "react"
-import ReactionButton from "./ReactionButton"
 
 const emojiTray = ["👍", "❤️", "🔥", "😂", "😢", "😮"]
 
-const Message = ({ message, onReact }) => {
+const Message = ({ message, onReact, userId }) => {
   const [isEmojiTrayOpen, setIsEmojiTrayOpen] = useState(false)
 
   const toggleEmojiTray = () => {
@@ -11,20 +10,52 @@ const Message = ({ message, onReact }) => {
   }
 
   const handleEmojiClick = (emoji) => {
-    onReact(message.id, emoji)
-    setIsEmojiTrayOpen(false) // Fechar bandeja após selecionar emoji
+    onReact(message.id, emoji, userId)
+    setIsEmojiTrayOpen(false) // Fecha a bandeja após a seleção
   }
+
+  // Obter a lista de emojis reagidos e calcular a soma total das reações
+  const totalReactions = Object.values(message.reactions).reduce(
+    (sum, count) => sum + count,
+    0
+  )
+  const reactedEmojis = Object.keys(message.reactions).filter(
+    (emoji) => message.reactions[emoji] > 0
+  )
 
   return (
     <div style={{ marginBottom: "20px", position: "relative" }}>
       <p>{message.content}</p>
-      <div>
-        {Object.entries(message.reactions).map(([emoji, count]) => (
-          <ReactionButton key={emoji} emoji={emoji} count={count} />
+
+      {/* Botão de reações (emojis reagidos + total de reações) */}
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          gap: "5px",
+          cursor: "pointer",
+          padding: "5px 10px",
+          backgroundColor: "#f3f3f3",
+          borderRadius: "20px",
+        }}
+        onClick={toggleEmojiTray} // O mesmo botão abre a bandeja
+      >
+        {/* Exibe todos os emojis reagidos */}
+        {reactedEmojis.map((emoji) => (
+          <span key={emoji} style={{ fontSize: "20px" }}>
+            {emoji}
+          </span>
         ))}
-        <button onClick={toggleEmojiTray} style={{ marginLeft: "10px" }}>
-          😊
-        </button>
+
+        {/* Exibe a soma total de reações */}
+        {totalReactions > 0 && (
+          <span style={{ fontSize: "20px", marginLeft: "10px" }}>
+            {totalReactions}
+          </span>
+        )}
+
+        {/* Se não houver reações, mostre um emoji genérico */}
+        {totalReactions === 0 && <span style={{ fontSize: "20px" }}>😊</span>}
       </div>
 
       {/* Bandeja de Emojis */}
@@ -36,9 +67,9 @@ const Message = ({ message, onReact }) => {
             borderRadius: "10px",
             border: "1px solid #ccc",
             padding: "10px",
-            top: "50px",
-            left: "150px",
+            top: "5px",
             zIndex: 100,
+            left: "200px",
             display: "flex",
             gap: "5px",
           }}
